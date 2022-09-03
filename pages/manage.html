@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商店管理系统</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo layui-hide-xs layui-bg-black">商店管理系统</div>
+            <!-- 头部区域（可配合layui 已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <!-- 标题 -->
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                    <i class="layui-icon layui-icon-spread-left"></i>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">账号登录</li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item"><a href="login.html">登录</a></li>
+                    <li class="layui-nav-item layui-bg-green"><a href="register.html">注册</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label layui-bg-black">用户名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="username" required lay-verify="required|number" placeholder="请输入数字"
+                                autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label layui-bg-black">密码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="passwd" required lay-verify="required|number" placeholder="请输入数字"
+                                autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button id="loginButton" class="layui-btn" lay-submit lay-filter="login"
+                                lay-btn-disabled>登录</button>
+                            <button id="resetButton" type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script>
+        //JS 
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer
+                , form = layui.form
+                , $ = layui.$;
+
+            //表单事件
+            form.on("submit(login)", function (data) {
+                var index = layer.load(1, { shade: 0.5, title: "登入中..." });   //载入遮罩层
+                var field = data.field;
+                var headers = new Headers();
+                headers.append('Accept', 'application/json');
+                fetch("/user?username=" + field.username + "&passwd=" + field.passwd, {
+                    method: "GET",
+                    mode: "same-origin",
+                    headers: headers
+                })
+                    .then(resp => resp.json())
+                    .then(data => {
+                        layer.close(index);
+                        switch (data.state) {
+                            case 0:
+                                document.cookie = "token=" + data.token;
+                            case 1:
+                                layer.msg('用户名未注册！', { icon: 7, time: 1200 });
+                            case 2:
+                                layer.msg('用户名或密码错误！', { icon: 7, time: 1200 });
+                            default:
+                                console.log("response error.");
+                        }
+                    })
+                    .catch(err => { layer.close(index); layer.msg('远程服务器错误！', { icon: 2, time: 1200 }); console.log(err); });
+                return false;   //取消submit事件
+            })
+        });
+    </script>
+</body>
+
+</html>
