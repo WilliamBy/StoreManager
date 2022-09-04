@@ -18,7 +18,7 @@
                 <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
                     <i class="layui-icon layui-icon-spread-left"></i>
                 </li>
-                <li class="layui-nav-item layui-hide-xs">登录界面</li>
+                <li class="layui-nav-item layui-hide-xs">用户注册界面</li>
             </ul>
         </div>
 
@@ -27,7 +27,7 @@
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item"><a href="login.html">登录</a></li>
-                    <li class="layui-nav-item layui-bg-green"><a href="register.html">注册</a></li>
+                    <li class="layui-nav-item layui-bg-green"><a href="#" style="color: white;">注册</a></li>
                 </ul>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="layui-body">
             <!-- 内容主体区域 -->
             <div style="padding: 15px;">
-                <form class="layui-form layui-form-pane">
+                <form class="layui-form layui-form-pane" lay-filter="registerForm">
                     <div class="layui-form-item">
                         <label class="layui-form-label layui-bg-black">用户名</label>
                         <div class="layui-input-block">
@@ -43,17 +43,25 @@
                                 placeholder="请输入不含空格的3-16位字符" autocomplete="off" class="layui-input">
                         </div>
                     </div>
+                    <blockquote class="layui-elem-quote">用户名不包含特殊字符、不能全为数字、首尾不能出现下划线</blockquote>
                     <div class="layui-form-item">
                         <label class="layui-form-label layui-bg-black">密码</label>
                         <div class="layui-input-block">
-                            <input type="text" name="passwd" required lay-verify="required|passwd"
+                            <input type="password" name="passwd" required lay-verify="required|passwd"
                                 placeholder="请输入不含空格的6-12位字符" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label layui-bg-black">确认密码</label>
                         <div class="layui-input-block">
-                            <button id="loginButton" class="layui-btn" lay-submit lay-filter="login"
-                                lay-btn-disabled>登录</button>
+                            <input type="password" name="confirm" required lay-verify="required|confirm"
+                                placeholder="请再次输入相同密码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button id="loginButton" class="layui-btn" lay-submit lay-filter="register"
+                                lay-btn-disabled>注册</button>
                             <button id="resetButton" type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -62,69 +70,7 @@
         </div>
     </div>
     <script src="../layui/layui.js"></script>
-    <script>
-        //JS 
-        layui.use(['layer', 'form'], function () {
-            var layer = layui.layer
-                , form = layui.form
-                , $ = layui.$;
-
-            //表单验证
-            form.verify({
-                username: function (value, item) { //value：表单的值、item：表单的DOM对象
-                    if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                        return '用户名不能有特殊字符';
-                    }
-                    if (/(^\_)|(\__)|(\_+$)/.test(value)) {
-                        return '用户名首尾不能出现下划线\'_\'';
-                    }
-                    if (/^\d+\d+\d$/.test(value)) {
-                        return '用户名不能全为数字';
-                    }
-                    if (value.length < 3 || value.length > 16) {
-                        return '用户名必须6到12位，且不能出现空格'
-                    }
-                }
-
-                //我们既支持上述函数式的方式，也支持下述数组的形式
-                //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
-                , passwd: [
-                    /^[\S]{6,12}$/
-                    , '密码必须6到12位，且不能出现空格'
-                ]
-            });
-            //表单事件
-            form.on("submit(login)", function (data) {
-                var index = layer.load(1, { shade: 0.5, title: "登入中..." });   //载入遮罩层
-                var field = data.field;
-                var headers = new Headers();
-                headers.append('Accept', 'application/json');
-                fetch("/user?username=" + field.username + "&passwd=" + field.passwd, {
-                    method: "GET",
-                    mode: "same-origin",
-                    headers: headers
-                })
-                    .then(resp => resp.json())
-                    .then(data => {
-                        layer.close(index);
-                        switch (data.state) {
-                            case 0:
-                                document.cookie = "token=" + data.token;
-                                layer.msg('登陆成功！', { time: 1000 });
-                                window.open("/pages/manage.html", "_self");
-                            case 1:
-                                layer.msg('用户名未注册！', { icon: 7, time: 1200 });
-                            case 2:
-                                layer.msg('用户名或密码错误！', { icon: 7, time: 1200 });
-                            default:
-                                console.log("response error.");
-                        }
-                    })
-                    .catch(err => { layer.close(index); layer.msg('远程服务器错误！', { icon: 2, time: 1200 }); console.log(err); });
-                return false;   //取消submit事件
-            })
-        });
-    </script>
+    <script src="../js/register.js" ></script>
 </body>
 
 </html>
