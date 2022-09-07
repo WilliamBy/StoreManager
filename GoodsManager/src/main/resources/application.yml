@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+mybatis:
+  config:
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/goods_db"
+    username: root
+    password: 951212
+jwt:
+  config:
+    secret: secret
+---
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+---

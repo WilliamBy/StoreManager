@@ -38,6 +38,7 @@ layui.use(["layer", "form"], function () {
     var field = data.field;
     var headers = new Headers();
     headers.append("Accept", "application/json");
+    headers.append("Content-Type", "application/json");
     fetch("/api/user", {
       method: "POST",
       mode: "same-origin",
@@ -50,22 +51,22 @@ layui.use(["layer", "form"], function () {
     })
       .then((resp) => resp.json())
       .then((data) => {
-        layer.close(index);
         switch (data.state) {
           case 0:
-            layer.msg("注册成功！", { time: 1000 });
-            window.open("/pages/login.html", "_self");
+            layer.msg("注册成功！", { time: 1200 });
+            window.setTimeout(window.open, 1200, '/pages/login.html', '_self');
+            break;
           case 1:
             layer.msg("用户名冲突！", { icon: 7, time: 1200 });
+            break;
           default:
-            console.log("response error.");
+            layer.msg("远程服务器错误！", { icon: 2, time: 1200 });
         }
       })
       .catch((err) => {
-        layer.close(index);
         layer.msg("远程服务器错误！", { icon: 2, time: 1200 });
         console.log(err);
-      });
+      }).finally(() => {layer.close(index);});
     return false; //取消submit事件
   });
 });

@@ -7,14 +7,15 @@ layui.use(['layer', 'form'], function () {
     //验证会话
     var token = sessionStorage["token"];
     if (!token) {
-        layer.msg('请先登陆', { icon: 7, time: 1000 });
-        window.setTimeout(window.open, 1000, '../pages/login.html', '_self');
+        layer.msg('请先登陆', { icon: 7, time: 3000 });
+        window.setTimeout(window.open, 3000, '/pages/login.html', '_self');
     }
 
     //取旧值
-    var oldRow = sessionStorage['oldRow'];
+    var oldRow = JSON.parse(sessionStorage['oldRow']);
     if (oldRow) {
-        form.val('editForm', oldRow)
+        console.log(oldRow);
+        form.val('editForm', oldRow);
     }
 
     //表单事件
@@ -23,12 +24,14 @@ layui.use(['layer', 'form'], function () {
         var field = data.field;
         var headers = new Headers();
         headers.append('Accept', 'application/json');
-        headers.append('Authentication', 'Bearer ' + token);
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
         fetch("/api/goods", {
             method: "POST",
             headers: headers,
             body: JSON.stringify({
                 modify: true,
+                old_name: oldRow.name,
                 name: field.name,
                 price: field.price,
                 from: field.from,
@@ -38,18 +41,23 @@ layui.use(['layer', 'form'], function () {
         })
             .then(resp => resp.json())
             .then(data => {
-                layer.close(index);
                 switch (data.state) {
                     case 0:
-                        layer.msg('修改成功！', { time: 1000 });
+                        layer.msg('修改成功！', { time: 1200 });
                         window.open("/pages/manage.html", "_self");
+                        break;
                     case 1:
                         layer.msg('商品名已存在', { icon: 7, time: 1200 });
+                        break;
+                    case 2:
+                        layer.msg('编辑失败', { icon: 7, time: 1200 });
+                        break;
                     default:
-                        console.log("response error.");
+                        layer.msg('远程服务器错误！', { icon: 2, time: 1200 });
                 }
             })
-            .catch(err => { layer.close(index); layer.msg('远程服务器错误！', { icon: 2, time: 1200 }); console.log(err); });
+            .catch(err => {layer.msg('远程服务器错误！', { icon: 2, time: 1200 }); console.log(err); })
+            .finally(() => {layer.close(index)})
         return false;   //取消submit事件
     })
 
@@ -58,6 +66,7 @@ layui.use(['layer', 'form'], function () {
         layer.confirm('确定退出登录？', {
             btn: ['确定', '取消'] //按钮
         }, function () {
+            delete sessionStorage["token"];
             window.open('login.html', '_self');
         });
     }
@@ -65,5 +74,10 @@ layui.use(['layer', 'form'], function () {
     //重置旧数据
     document.getElementById('resetButton').onclick = function () {
         form.val('editForm', oldRow);
+    }
+
+    //返回主界面
+    document.getElementById('cancelButton').onclick = function () {
+        window.open('/pages/manage.html', '_self');
     }
 });

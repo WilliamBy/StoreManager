@@ -34,6 +34,7 @@ layui.use(['layer', 'form'], function () {
         var field = data.field;
         var headers = new Headers();
         headers.append('Accept', 'application/json');
+        headers.append('Content-Type', 'application/json');
         fetch("/api/user", {
             method: "POST",
             mode: "same-origin",
@@ -46,21 +47,24 @@ layui.use(['layer', 'form'], function () {
         })
             .then(resp => resp.json())
             .then(data => {
-                layer.close(index);
                 switch (data.state) {
                     case 0:
                         sessionStorage["token"] = data.token;   //存储会话token
                         layer.msg('登陆成功！', { time: 1000 });
                         window.open("/pages/manage.html", "_self");
+                        break;
                     case 1:
                         layer.msg('用户名未注册！', { icon: 7, time: 1200 });
+                        break;
                     case 2:
                         layer.msg('用户名或密码错误！', { icon: 7, time: 1200 });
+                        break;
                     default:
-                        console.log("response error.");
+                        layer.msg('远程服务器错误！', { icon: 2, time: 1200 });
                 }
             })
-            .catch(err => { layer.close(index); layer.msg('远程服务器错误！', { icon: 2, time: 1200 }); console.log(err); });
+            .catch(err => { layer.msg('远程服务器错误！', { icon: 2, time: 1200 }); console.log(err); })
+            .finally(() => {layer.close(index);})
         return false;   //取消submit事件
     })
 });
