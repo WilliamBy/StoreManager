@@ -1,9 +1,6 @@
 # GoodsManager
-[![release](https://img.shields.io/github/v/release/WilliamBy/StoreManager)](https://github.com/WilliamBy/StoreManager/releases)
-[![license](https://img.shields.io/github/license/WilliamBy/StoreManager)](./LICENSE.md)
+[![release](https://img.shields.io/github/v/release/WilliamBy/StoreManager)](https://github.com/WilliamBy/StoreManager/releases)[![license](https://img.shields.io/github/license/WilliamBy/StoreManager)](./LICENSE.md)![commit](https://img.shields.io/github/last-commit/Williamby/StoreManager)
 
-![commit](https://img.shields.io/github/last-commit/Williamby/StoreManager)
----
 ## Introduction
 
 This is a simple web application for managing goods in your own store. 
@@ -109,14 +106,14 @@ java -DMYSQL_USERNAME=xxx -DMYSQL_PASSWORD=xxx -DSECRET=xxx -DMYSQL_HOST=xxx -ja
 
 - Config Parameter Table
 
-| Parameter            | Explain                             | Default Value |
-| -------------------- | ----------------------------------- | ------------- |
-| `MYSQL_USERNAME`     | **MySQL Server username**           | `root`        |
-| `MYSQL_PASSWORD**`** | **MySQL Server password**           | /             |
-| `MYSQL_HOST`         | MySQL Service Host                  | `localhost`   |
-| `MYSQL_PORT`         | MySQL Service Port                  | `3360`        |
-| `WEB_PORT`           | Web Service Port                    | `80`          |
-| `SECRET`             | Secret key for generating jwt token | `secret`      |
+| Parameter        | Explain                             | Default Value |
+| ---------------- | ----------------------------------- | ------------- |
+| `MYSQL_USERNAME` | MySQL Server username               | `root`        |
+| `MYSQL_PASSWORD` | MySQL Server password               | /             |
+| `MYSQL_HOST`     | MySQL Service Host                  | `localhost`   |
+| `MYSQL_PORT`     | MySQL Service Port                  | `3360`        |
+| `WEB_PORT`       | Web Service Port                    | `80`          |
+| `SECRET`         | Secret key for generating jwt token | `secret`      |
 
 - Just visit `http://<domain>:<port>`
 - If you want the application to run after leaving window, refer to tools `tmux` or `screen`
