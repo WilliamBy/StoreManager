@@ -1,20 +1,38 @@
 spring:
   profiles:
-    active: dev
+    active: release
 
 ---
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: release
+server:
+  port: ${WEB_PORT:80}
 mybatis:
   config:
-    url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/goods_db"
-    username: root
-    password: 951212
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/goods_db"
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:951212}
 jwt:
   config:
-    secret: secret
+    secret: ${JWT_SECRET:secret}
+---
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: ${WEB_PORT:8080}
+mybatis:
+  config:
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_POST:3306}/goods_db"
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:951212}
+jwt:
+  config:
+    secret: ${JWT_SECRET:secret}
 ---
 
 ---
