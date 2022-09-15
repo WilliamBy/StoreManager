@@ -1,5 +1,5 @@
 # GoodsManager
-[![release](https://img.shields.io/github/v/release/WilliamBy/StoreManager)](https://github.com/WilliamBy/StoreManager/releases)[![license](https://img.shields.io/github/license/WilliamBy/StoreManager)](./LICENSE.md)![commit](https://img.shields.io/github/last-commit/Williamby/StoreManager)
+[![release](https://img.shields.io/github/v/release/WilliamBy/StoreManager)](https://github.com/WilliamBy/StoreManager/releases) [![license](https://img.shields.io/github/license/WilliamBy/StoreManager)](./LICENSE.md) ![commit](https://img.shields.io/github/last-commit/Williamby/StoreManager)
 
 ## Introduction
 
@@ -117,3 +117,4 @@ java -DMYSQL_USERNAME=xxx -DMYSQL_PASSWORD=xxx -DSECRET=xxx -DMYSQL_HOST=xxx -ja
 
 - Just visit `http://<domain>:<port>`
 - If you want the application to run after leaving window, refer to tools `tmux` or `screen`
+
