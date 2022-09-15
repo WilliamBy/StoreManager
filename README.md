@@ -1,7 +1,8 @@
 # GoodsManager
 [![release](https://img.shields.io/github/v/release/WilliamBy/StoreManager)](https://github.com/WilliamBy/StoreManager/releases)
-[![license](https://img.shields.io/github/license/WilliamBy/StoreManager)](#)
-[![commit](https://img.shields.io/github/last-commit/Williamby/StoreManager)](#)
+[![license](https://img.shields.io/github/license/WilliamBy/StoreManager)](./LICENSE.md)
+
+![commit](https://img.shields.io/github/last-commit/Williamby/StoreManager)
 ---
 ## Introduction
 
@@ -35,7 +36,7 @@ This is a simple web application for managing goods in your own store.
 | MySQL | Open source database | [MySQL](https://www.mysql.com/) |
 | JWT | Authorization Token Lib | [JSON Web Tokens - jwt.io](https://jwt.io/) |
 
-## Build
+## Development
 
 - Project Instructure
 
@@ -70,6 +71,7 @@ static
     └── register.html
 ```
 
+- [RESTful API doc](./Others/prototype/接口.md)
 - Fork & Clone this repository to your local machine
 
 ```shell
@@ -89,6 +91,8 @@ mvn clean package
 ```
 
 ## Deployment & Usage
+
+- Download jar file from [![release](https://img.shields.io/github/v/release/WilliamBy/StoreManager)](https://github.com/WilliamBy/StoreManager/releases)
 
 - Make sure `JRE 8+` and `MySQL Server v8.0.30` are installed (any other version was not tested)
 - Set environment variable `JAVA_HOME` properly and check it by:
